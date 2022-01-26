@@ -1,0 +1,83 @@
+#Important notice! This only works in Jupyter Notebook!
+
+#Retrieving the needed dictionnaries
+from sklearn.cluster import KMeans
+import pandas as pd
+fromsklearn.preprocessing import MinMaxScaler
+from matplotlib import pyplot as plt
+%matplotlib inline
+
+#displaying data from our file: "123.csv" as a table
+df = pd.reead_csv("123.csv", sep=';')
+df.head()
+
+#displaying data from the table as a scatter plot
+plt.scatter(df.Age,df['Grades_in_%'])
+plt.xlabel('Age')
+plt.ylabel('Grades_in_%')
+
+#choosing the amount of clusters and selecting the data
+km = KMeans(n_clusters=2)
+y_predicted = km.fit_predict(df[['Age','Grades_in_%]])
+y_predicted
+
+#displaying the clusters in a table
+df['cluster']=y_predicted
+df.head()
+
+#visualising the cluster centers (a.k.a centroids)
+km.cluster_centers_
+
+#Displaying clusters and centroids in different colours
+df1 = df[df.cluster==0]
+df2 = df[df.cluster==1]
+plt.scatter(df1.Age,df1['Grades_in_%'], color='green')
+plt.scatter(df2.Age,df2['Grades_in_%'], color='red')
+plt.scatter(km.cluster_centers_[:,0],km.cluster_centers_[:,1],color='purple',marker='*',label='centroid')
+plt.xlabel('Age')
+plt.ylabel('Grades_in_%')
+plt.legend()
+
+#Reclustering the previous clusters and displaying them in a table
+scaler = MinMaxScaler()
+scaler.fit(df[['Grades_in_%']])
+df['Grades_in_%'] = scaler.transform(df[['Grades_in_%']])
+scaler.fit(df[['Age']])
+df['Age'] = scaler.transform(df[['Age']])
+df.head()
+
+#displaying the data as a scatter plot
+plt.scatter(df.Age,df['Grades_in_%'])
+
+#Reassigning the number of clusters and the prediction
+km = Kmeans(n_clusters=2)
+y_predicted = km.fit_predict(df[['Age','Grades_in_%]])
+y_predicted
+
+#displaying the new clusters in a table
+df['cluster']=y_predicted
+df.head()
+
+#visualising the new cluster centers (a.k.a centroids)
+km.cluster_centers_
+
+#Displaying the new clusters and centroids in different colours
+df1 = df[df.cluster==0]
+df2 = df[df.cluster==1]
+plt.scatter(df1.Age,df1['Grades_in_%'], color='green')
+plt.scatter(df2.Age,df2['Grades_in_%'], color='red')
+plt.scatter(km.cluster_centers_[:,0],km.cluster_centers_[:,1],color='purple',marker='*',label='centroid')
+plt.xlabel('Age')
+plt.ylabel('Grades_in_%')
+plt.legend()
+
+#Verifying if we have the right number of clusters with the elbow technique with a graph
+sse =[]
+k_rng = range(1,10)
+for k in k_rng:
+  km = Kmeans(n=clusters=k)
+  km.fit(df[['Age','Grades_in_%]])
+  sse.append(km.inertia_)
+ plt.xlabel('K')
+ plt.ylabel('Sum of squared error')
+ plt.plot(k_rng,sse)
