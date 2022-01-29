@@ -1,0 +1,16 @@
+#Name: Adam Prokuratorski
+#Student ID: 46706
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("C:\\Users\\Adasiek\\Desktop\\babies.csv")
+print(df)
+
+df[df["Gender"]=="F"]["Occurences"].hist(alpha=0.5)
+df[df["Gender"]=="M"]["Occurences"].hist(alpha=0.5)
+plt.legend(["F", "M"])
+
+print(df["Occurences"].mean())
+print(df["Occurences"].median())
+plt.show()
